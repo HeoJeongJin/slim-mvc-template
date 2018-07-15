@@ -7,22 +7,27 @@ use App\Middleware\GuestMiddleware;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+$app->group('', function(){
+	$this->get('/auth/signup', 'AuthController:getSignUp')->setName('auth.signup');
+
+	$this->post('/auth/signup', 'AuthController:postSignUp');
+
+	$this->get('/auth/signin', 'AuthController:getSignIn')->setName('auth.signin');
+
+	$this->post('/auth/signin', 'AuthController:postSignIn');
+})->add(new GuestMiddleware($container));
 
 
 
-$app->get('/auth/signin', 'AuthController:getSignIn')->setName('auth.signin');
+$app->group('', function(){
+	
+	$this->get('/', 'HomeController:index')->setName('home');
 
-$app->post('/auth/signin', 'AuthController:postSignIn');
+	$this->get('/auth/signout', 'AuthController:getSignOut')->setName('auth.signout');
 
-$app->get('/auth/signup', 'AuthController:getSignUp')->setName('auth.signup');
+	$this->get('/auth/password/change', 'PasswordController:getChangePassword')->setName('auth.password.change');
 
-$app->post('/auth/signup', 'AuthController:postSignUp');
+	$this->post('/auth/password/change', 'PasswordController:postChangePassword');
 
+})->add(new AuthMiddleware($container));
 
-$app->get('/', 'HomeController:index')->setName('home');
-
-$app->get('/auth/signout', 'AuthController:getSignOut')->setName('auth.signout');
-
-$app->get('/auth/password/change', 'PasswordController:getChangePassword')->setName('auth.password.change');
-
-$app->post('/auth/password/change', 'PasswordController:postChangePassword');
