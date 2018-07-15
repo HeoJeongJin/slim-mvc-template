@@ -1,0 +1,45 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+
+	<div class='row'>
+		
+		<div class='col-md-4 offset-md-4'>
+
+			<div class='card'>
+				<div class='card-header'>Change password</div>
+				<div class='card-body'>
+
+					{# errors 메세지 출력 #}
+					{{ errors | json_encode }}
+
+					<form action="{{ path_for('auth.password.change') }}" method='post' autocomplete='off'>
+
+						<div class='form-group {{ errors.password_old ? ' has-error' : '' }}'>
+							<label for='password_old'>Current password</label>
+							<input type='text' name='password_old' id='password_old' class='form-control' >
+							{% if errors.password_old %}
+								<span class='help-block'>Error message : {{ errors.password_old | first }}</span>
+							{% endif %}
+						</div>
+
+						<div class='form-group {{ errors.password ? ' has-error' : '' }}'>
+							<label for='password'>Password</label>
+							<input type='text' name='password' id='password' class='form-control' value='{{ old.password }}'>
+							{% if errors.password %}
+								<span class='help-block'>Error message : {{ errors.password | first }}</span>
+							{% endif %}
+						</div>
+
+						<button type='submit' class='btn btn-danger'>Change password</button>
+						
+						{{ csrf.field | raw }}
+
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}

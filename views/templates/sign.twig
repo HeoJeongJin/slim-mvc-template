@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="shortcut icon" href="{{ base_url() }}/common/images/favicon_login.ico">
+
+	<title>{{ project.title }}</title>
+
+	<!-- css -->
+	<!-- <link rel="stylesheet" type="text/css" href="common/css/animate.min.css" /> -->
+	<link rel="stylesheet" type="text/css" href="{{ base_url() }}/common/fontawesome-free-5.1.0-web/css/all.css" />
+	<link rel="stylesheet" type="text/css" href="{{ base_url() }}/common/bootstrap-4.1.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="{{ base_url() }}/common/css/normalize.css" />
+
+	<!-- custom -->
+	<link rel="stylesheet" type="text/css" href="{{ base_url() }}/css/login.css" />
+	<link rel="stylesheet" type="text/css" href="{{ base_url() }}/common/css/serpiko-common.css">
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+	<script>
+		function getCookie() {
+
+			var cook = document.cookie + ";";
+			var key = 'userid';
+			var idx = cook.indexOf(key, 0);
+			var val = "";
+
+			if (idx != -1) {
+
+				cook = cook.substring(idx, cook.length);
+				begin = cook.indexOf("=", 0) + 1;
+				end = cook.indexOf(";", begin);
+				val = unescape(cook.substring(begin, end));
+			}
+
+			if (val != "") {
+
+				var frm = document.logForm;
+				frm.id.value = val;
+				frm.idcheck.checked = true;
+			}
+
+		}
+
+		function confirmSave($checkbox) {
+			var isRemember = false;
+			isRemember = confirm('ID 를 저장하시겠습니까?');
+
+			if (!isRemember)
+				$checkbox.checked = false;
+		}
+
+		function check_submit($form) {
+			var frm = document.logForm;
+			if (frm.idcheck.checked) {
+				saveLogin(frm.id.value);
+			} else {
+				saveLogin('');
+			}
+			return true;
+		}
+
+		function saveLogin(id) {
+			if (id != '') {
+				setCookie('userid', id, 7);
+			} else {
+				setCookie('userid', id, -1);
+			}
+		}
+
+		function setCookie(cName, cValue, expiredays) {
+			var today = new Date();
+			today.setDate(today.getDate() + expiredays);
+			document.cookie = cName + "=" + escape(cValue) + "; path=/; expires=" + today.toGMTString();
+		}
+	</script>
+
+</head>
+
+<body onLoad="getCookie()">
+
+	<div class="sunrise-loading" style="display: block;"></div>
+
+	<div id="wrap">
+
+		<ul class='img-container'>
+			<li class='img-0'></li>
+			<li class='img-1'></li>
+			<li class='img-2'></li>
+		</ul>
+
+		{% block content %}{% endblock %}
+		
+	</div>
+
+	<div id="footer" class="clearfix">
+		<p>
+			PC 브라우저 :
+			<i class='fab fa-edge'></i>&nbsp;<span class="warning-txt">Edge, </span>
+			<i class='fab fa-internet-explorer'></i>&nbsp;<span class="warning-txt">IE10, </span>
+			<i class='fab fa-firefox'></i>&nbsp;<span class="warning-txt">Firfox11, </span>
+			<i class='fab fa-chrome'></i>&nbsp;<span class="warning-txt">Chrome16, </span>
+			<i class='fab fa-safari'></i>&nbsp;<span class="warning-txt">Safari7 이상</span>
+		</p>
+		<p class='m-t-5'>
+			모바일 :
+			<i class='fab fa-apple'></i>&nbsp;<span class="warning-txt">IOS Safari6.1, </span>
+			<i class='fab fa-android'></i>&nbsp;<span class="warning-txt">Chrome for Android 49 이상</span>
+		</p>
+	</div>
+
+	<script src='{{ base_url() }}/common/js/jquery/jquery-3.1.1.min.js'></script>
+
+	<script>
+		$(window).on("load", function(e) {
+			$(".sunrise-loading").fadeOut(1e3);
+		});
+
+		$(document).ready(function() {
+			/*
+			var logForm = $('#logForm');
+			var regForm = $('#regForm');
+
+			$('.formNotice span').click(function() {
+				logForm.toggle();
+				regForm.toggle();
+			});
+			*/
+
+			// 2018.03.29 허정진
+
+			function fnRandomize($min, $max, $maxContainBool) {
+				$maxContainBool = $maxContainBool || false;
+				return Math.floor(Math.random() * ($max - $min + $maxContainBool)) + $min;
+			}
+
+			/* v.1
+			var rnum = fnRandomize(0, 2, true);
+			$('body').css("background-image","url(project/images/bg/laptop_"+rnum+".jpg)");
+
+			setInterval(function(){
+				var rnum = fnRandomize(0, 2, true);
+				$('body').css("background-image","url(project/images/bg/laptop_"+rnum+".jpg)");
+			}, 10 * 1000);
+			*/
+
+			// v.2
+			var $img_container = $(".img-container");
+			var $imgs = $img_container.children();
+			var imagesLength = $imgs.length;
+			var nI = 0;
+			var intervalSeconds = 5 * 1000;
+			setInterval(function() {
+
+				// 전치연산
+				++nI;
+
+				// max value 보정
+				if (nI >= imagesLength) nI = 0;
+
+				// 기존 child 는 뎁스 뒤로밀어넣고 fadeOut
+				for (var i = 0; i < imagesLength; i++) {
+
+					if (i != nI) {
+						$(".img-" + i).css({
+							"z-index": -1
+						}).animate({
+							"opacity": 0
+						}, 1000, 'swing');
+					}
+				}
+
+				// Active 는 뎁스 올려놓고 fadeIn
+				$(".img-" + nI).css("z-index", 0).animate({
+					"opacity": 1
+				}, 1000, 'swing');
+
+			}, intervalSeconds);
+
+		});
+	</script>
+
+</body>
+
+
+</html>

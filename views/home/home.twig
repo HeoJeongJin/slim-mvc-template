@@ -1,0 +1,26 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+
+<div>
+	{% include 'templates/partials/flash.twig' %}
+
+	<h2>Wellcom To the Home!!</h2>
+</div>
+
+<form method='post'>
+	{{ csrf.field | raw }} {# var won't be escaped #}
+</form>
+
+{% endblock content %}
+
+
+
+
+
+
+{% block page_inner_script %}
+<script>
+
+</script>
+{% endblock page_inner_script %}

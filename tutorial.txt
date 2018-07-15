@@ -1,0 +1,110 @@
+
+slim 설치
+
+> composer require slim/slim "^3.0"
+
+#################################################################################
+
+apache 셋팅
+
+./public/.htaccess
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+
+#################################################################################
+
+PHP 내장 서버
+
+./public/ public-accessible 디렉토리가 있다고 가정하고 index.php 라는 파일이라고 할때
+
+php -S localhost:8888 -t public public/index.php
+
+http://localhost/SLIM_MVC_TEMPLATE_V1/public/    의 진입을
+localhost:8888  로 사용한다.
+
+#################################################################################
+
+
+autoload 셋팅
+
+composer.json
+
+{
+    "require": {
+        "slim/slim": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "My\\Namespace\\": "src/"
+        }
+    }
+}
+
+// index.php
+require 'vendor/autoload.php';
+
+$app = new \Slim\App();
+$myClass = new \My\Namespace\MyClass();
+
+
+"autoload": {
+    "psr-4": {
+        "App\\": "app"
+    }
+},
+
+
+$ composer dump-autoload -o
+
+#################################################################################
+
+모노로그
+
+https://github.com/Seldaek/monolog
+
+> composer require monolog/monolog
+
+#################################################################################
+
+validate
+
+https://github.com/Respect/Validation
+
+> composer require respect/validation
+
+#################################################################################
+
+twig view
+
+https://github.com/slimphp/Twig-View
+
+$ composer require slim/twig-view
+
+#################################################################################
+
+flash
+
+https://github.com/slimphp/Slim-Flash
+
+$ composer require slim/flash
+
+#################################################################################
+
+Eloquent ORM
+
+https://questdot.com/php-slim-framework-eloquent-orm-tutorial/
+
+$ composer require illuminate/database "~5.6"
+
+
+#################################################################################
+
+Slim Framework CSRF Protection
+
+https://github.com/slimphp/Slim-Csrf
+
+$ composer require slim/csrf

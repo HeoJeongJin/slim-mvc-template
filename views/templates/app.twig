@@ -1,0 +1,29 @@
+
+{# head #}
+{% include 'templates/partials/head.twig' %}
+
+{# header #}
+{% include 'templates/partials/header.twig' %}
+
+{# navigation #}
+{% include 'templates/partials/navigation.twig' %}
+
+    {# content #}
+    {% block content %}{% endblock content %}
+
+{# footer #}
+{% include 'templates/partials/footer.twig' %}
+
+{# underjs #}
+{% include 'templates/partials/underjs.twig' %}
+
+{# folderName/fileName.js #}
+{% if isJsFileExist %}
+    <script src="{{ base_url() }}/js{{ page_path }}.js" type="text/javascript"></script>
+{% endif %}
+    
+    {# pagin inner script #}
+    {% block page_inner_script %}{% endblock page_inner_script %}
+
+</body>
+</html>
